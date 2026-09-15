@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TeLlevo - Servicio de transporte en Paraguay</title>
+  <meta name="description" content="TeLlevo - Tu servicio de transporte confiable en Paraguay. Viajes seguros, puntuales y comodos.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1B5E20;
+      --primary-light: #2E7D32;
+      --accent: #E53935;
+      --accent-light: #EF5350;
+      --white: #FFFFFF;
+      --gray-50: #FAFAFA;
+      --gray-100: #F5F5F5;
+      --gray-200: #EEEEEE;
+      --gray-600: #757575;
+      --gray-800: #424242;
+      --gray-900: #212121;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--gray-900);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 0 24px;
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      font-size: 1.5rem; font-weight: 800; text-decoration: none;
+      color: var(--primary);
+    }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a {
+      text-decoration: none; color: var(--gray-800);
+      font-weight: 500; font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--primary); }
+    .lang-switch {
+      display: flex; gap: 4px;
+      background: var(--gray-100); border-radius: 8px; padding: 3px;
+    }
+    .lang-btn {
+      padding: 5px 12px; border: none; border-radius: 6px;
+      font-size: 0.8rem; font-weight: 600; cursor: pointer;
+      background: transparent; color: var(--gray-600);
+      transition: all 0.2s;
+    }
+    .lang-btn.active {
+      background: var(--white); color: var(--primary);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    .mobile-menu-btn {
+      display: none; background: none; border: none; cursor: pointer;
+      width: 32px; height: 32px; position: relative;
+    }
+    .mobile-menu-btn span {
+      display: block; width: 24px; height: 2px; background: var(--gray-800);
+      position: absolute; left: 4px; transition: all 0.3s;
+    }
+    .mobile-menu-btn span:nth-child(1) { top: 8px; }
+    .mobile-menu-btn span:nth-child(2) { top: 15px; }
+    .mobile-menu-btn span:nth-child(3) { top: 22px; }
+
+    /* HERO */
+    .hero {
+      padding: 140px 24px 100px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: var(--white);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -50%; right: -20%; width: 600px; height: 600px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -30%; left: -10%; width: 400px; height: 400px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 50%;
+    }
+    .hero-content { max-width: 800px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 800; line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      opacity: 0.9; max-width: 600px; margin: 0 auto 36px;
+    }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--accent); color: var(--white);
+      padding: 16px 36px; border-radius: 12px;
+      text-decoration: none; font-weight: 700; font-size: 1.1rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(229,57,53,0.4);
+    }
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 28px rgba(229,57,53,0.5);
+    }
+    .hero-stats {
+      display: flex; justify-content: center; gap: 48px;
+      margin-top: 60px; flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-number { font-size: 2rem; font-weight: 800; }
+    .stat-label { font-size: 0.85rem; opacity: 0.8; margin-top: 4px; }
+
+    /* SECTIONS */
+    section { padding: 100px 24px; }
+    .section-title {
+      text-align: center; margin-bottom: 60px;
+    }
+    .section-title h2 {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 800; color: var(--gray-900);
+      margin-bottom: 12px;
+    }
+    .section-title p {
+      color: var(--gray-600); font-size: 1.1rem;
+      max-width: 560px; margin: 0 auto;
+    }
+
+    /* SERVICES */
+    .services { background: var(--gray-50); }
+    .services-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+    .service-card {
+      background: var(--white); border-radius: 16px;
+      padding: 36px; box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    .service-icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; margin-bottom: 20px;
+    }
+    .service-icon.green { background: #E8F5E9; }
+    .service-icon.red { background: #FFEBEE; }
+    .service-icon.blue { background: #E3F2FD; }
+    .service-card h3 {
+      font-size: 1.25rem; font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .service-card p { color: var(--gray-600); font-size: 0.95rem; }
+
+    /* HOW IT WORKS */
+    .steps-grid {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 40px; text-align: center;
+    }
+    .step-number {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--primary); color: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; font-weight: 800;
+      margin: 0 auto 18px;
+    }
+    .step h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    .step p { color: var(--gray-600); font-size: 0.9rem; }
+
+    /* WHY US */
+    .why-us { background: var(--gray-50); }
+    .features-grid {
+      max-width: 1000px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 36px; text-align: center;
+    }
+    .feature-icon {
+      font-size: 2.2rem; margin-bottom: 14px;
+    }
+    .feature h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .feature p { color: var(--gray-600); font-size: 0.85rem; }
+
+    /* CTA */
+    .cta-section {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: var(--white); text-align: center;
+    }
+    .cta-section h2 {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 800; margin-bottom: 16px;
+    }
+    .cta-section p {
+      opacity: 0.9; font-size: 1.1rem;
+      max-width: 500px; margin: 0 auto 32px;
+    }
+    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-whatsapp {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #25D366; color: var(--white);
+      padding: 16px 32px; border-radius: 12px;
+      text-decoration: none; font-weight: 700; font-size: 1.05rem;
+      transition: transform 0.2s;
+    }
+    .btn-whatsapp:hover { transform: translateY(-2px); }
+    .btn-call {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.15); color: var(--white);
+      padding: 16px 32px; border-radius: 12px;
+      text-decoration: none; font-weight: 700; font-size: 1.05rem;
+      border: 2px solid rgba(255,255,255,0.3);
+      transition: transform 0.2s, background 0.2s;
+    }
+    .btn-call:hover { background: rgba(255,255,255,0.25); transform: translateY(-2px); }
+
+    /* FOOTER */
+    footer {
+      background: var(--gray-900); color: var(--white);
+      padding: 60px 24px 30px; text-align: center;
+    }
+    .footer-logo {
+      font-size: 1.5rem; font-weight: 800; margin-bottom: 16px;
+    }
+    .footer-logo span { color: var(--accent); }
+    footer p { color: var(--gray-600); font-size: 0.85rem; margin-top: 8px; }
+    .footer-links {
+      display: flex; gap: 24px; justify-content: center;
+      margin: 20px 0;
+    }
+    .footer-links a {
+      color: var(--gray-600); text-decoration: none; font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--white); }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: absolute; top: 64px; left: 0; right: 0;
+        background: var(--white); padding: 24px;
+        border-bottom: 1px solid var(--gray-200);
+        box-shadow: var(--shadow);
+      }
+      .mobile-menu-btn { display: block; }
+      .hero-stats { gap: 24px; }
+      .hero { padding: 120px 24px 80px; }
+      section { padding: 70px 24px; }
+    }
+
+    /* LANG VISIBILITY */
+    [data-lang] { display: none; }
+    [data-lang="es"] { display: revert; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">Te<span>Llevo</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="#servicios" data-lang="es">Servicios</a>
+      <a href="#como-funciona" data-lang="es">Como Funciona</a>
+      <a href="#por-que" data-lang="es">Por Que Nosotros</a>
+      <a href="#contacto" data-lang="es">Contacto</a>
+
+      <a href="#servicios" data-lang="en">Services</a>
+      <a href="#como-funciona" data-lang="en">How It Works</a>
+      <a href="#por-que" data-lang="en">Why Us</a>
+      <a href="#contacto" data-lang="en">Contact</a>
+
+      <a href="#servicios" data-lang="pt">Servicos</a>
+      <a href="#como-funciona" data-lang="pt">Como Funciona</a>
+      <a href="#por-que" data-lang="pt">Por Que Nos</a>
+      <a href="#contacto" data-lang="pt">Contato</a>
+
+      <div class="lang-switch">
+        <button class="lang-btn active" onclick="setLang('es')">ES</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" onclick="setLang('pt')">PT</button>
+      </div>
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <h1 data-lang="es">Tu viaje seguro y confiable en Paraguay</h1>
+    <h1 data-lang="en">Your safe and reliable ride in Paraguay</h1>
+    <h1 data-lang="pt">Sua viagem segura e confiavel no Paraguai</h1>
+
+    <p data-lang="es">Servicio de transporte profesional con conductores capacitados. Llegamos a donde necesites, cuando lo necesites.</p>
+    <p data-lang="en">Professional transportation service with trained drivers. We get you where you need to be, when you need to be there.</p>
+    <p data-lang="pt">Servico de transporte profissional com motoristas capacitados. Chegamos onde voce precisa, quando voce precisa.</p>
+
+    <a href="#contacto" class="hero-cta">
+      <span data-lang="es">Reservar Viaje</span>
+      <span data-lang="en">Book a Ride</span>
+      <span data-lang="pt">Reservar Viagem</span>
+      &#10132;
+    </a>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-number">10K+</div>
+        <div class="stat-label" data-lang="es">Viajes Realizados</div>
+        <div class="stat-label" data-lang="en">Rides Completed</div>
+        <div class="stat-label" data-lang="pt">Viagens Realizadas</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">500+</div>
+        <div class="stat-label" data-lang="es">Clientes Satisfechos</div>
+        <div class="stat-label" data-lang="en">Happy Customers</div>
+        <div class="stat-label" data-lang="pt">Clientes Satisfeitos</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label" data-lang="es">Disponibilidad</div>
+        <div class="stat-label" data-lang="en">Availability</div>
+        <div class="stat-label" data-lang="pt">Disponibilidade</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="servicios">
+  <div class="section-title">
+    <h2 data-lang="es">Nuestros Servicios</h2>
+    <h2 data-lang="en">Our Services</h2>
+    <h2 data-lang="pt">Nossos Servicos</h2>
+    <p data-lang="es">Soluciones de transporte para cada necesidad</p>
+    <p data-lang="en">Transportation solutions for every need</p>
+    <p data-lang="pt">Solucoes de transporte para cada necessidade</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon green">&#128663;</div>
+      <h3 data-lang="es">Viajes Urbanos</h3>
+      <h3 data-lang="en">City Rides</h3>
+      <h3 data-lang="pt">Viagens Urbanas</h3>
+      <p data-lang="es">Traslados rapidos y seguros dentro de Asuncion y el area metropolitana. Ideal para tu dia a dia.</p>
+      <p data-lang="en">Fast and safe transfers within Asuncion and the metropolitan area. Perfect for your daily commute.</p>
+      <p data-lang="pt">Traslados rapidos e seguros dentro de Assuncao e area metropolitana. Ideal para o seu dia a dia.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon red">&#9992;&#65039;</div>
+      <h3 data-lang="es">Traslados al Aeropuerto</h3>
+      <h3 data-lang="en">Airport Transfers</h3>
+      <h3 data-lang="pt">Traslados ao Aeroporto</h3>
+      <p data-lang="es">Servicio puntual de ida y vuelta al Aeropuerto Internacional Silvio Pettirossi. Nunca pierdas tu vuelo.</p>
+      <p data-lang="en">Punctual round-trip service to Silvio Pettirossi International Airport. Never miss your flight.</p>
+      <p data-lang="pt">Servico pontual de ida e volta ao Aeroporto Internacional Silvio Pettirossi. Nunca perca seu voo.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon blue">&#128739;</div>
+      <h3 data-lang="es">Viajes al Interior</h3>
+      <h3 data-lang="en">Long Distance Trips</h3>
+      <h3 data-lang="pt">Viagens ao Interior</h3>
+      <p data-lang="es">Viajes comodos a cualquier ciudad del pais: Encarnacion, Ciudad del Este, Pedro Juan Caballero y mas.</p>
+      <p data-lang="en">Comfortable trips to any city in the country: Encarnacion, Ciudad del Este, Pedro Juan Caballero and more.</p>
+      <p data-lang="pt">Viagens confortaveis a qualquer cidade do pais: Encarnacion, Ciudad del Este, Pedro Juan Caballero e mais.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="como-funciona">
+  <div class="section-title">
+    <h2 data-lang="es">Como Funciona</h2>
+    <h2 data-lang="en">How It Works</h2>
+    <h2 data-lang="pt">Como Funciona</h2>
+    <p data-lang="es">En tres simples pasos estas viajando</p>
+    <p data-lang="en">Three simple steps and you're on your way</p>
+    <p data-lang="pt">Em tres simples passos voce esta viajando</p>
+  </div>
+  <div class="steps-grid">
+    <div class="step">
+      <div class="step-number">1</div>
+      <h3 data-lang="es">Contactanos</h3>
+      <h3 data-lang="en">Contact Us</h3>
+      <h3 data-lang="pt">Fale Conosco</h3>
+      <p data-lang="es">Escribinos por WhatsApp o llamanos para coordinar tu viaje.</p>
+      <p data-lang="en">Message us on WhatsApp or give us a call to arrange your trip.</p>
+      <p data-lang="pt">Envie uma mensagem pelo WhatsApp ou ligue para coordenar sua viagem.</p>
+    </div>
+    <div class="step">
+      <div class="step-number">2</div>
+      <h3 data-lang="es">Confirmamos</h3>
+      <h3 data-lang="en">We Confirm</h3>
+      <h3 data-lang="pt">Confirmamos</h3>
+      <p data-lang="es">Te confirmamos el horario, el conductor y el precio del viaje.</p>
+      <p data-lang="en">We confirm the schedule, driver, and trip price with you.</p>
+      <p data-lang="pt">Confirmamos o horario, o motorista e o preco da viagem.</p>
+    </div>
+    <div class="step">
+      <div class="step-number">3</div>
+      <h3 data-lang="es">Viaja Tranquilo</h3>
+      <h3 data-lang="en">Ride in Comfort</h3>
+      <h3 data-lang="pt">Viaje Tranquilo</h3>
+      <p data-lang="es">Tu conductor llega a la hora acordada. Relajate y disfruta el viaje.</p>
+      <p data-lang="en">Your driver arrives at the agreed time. Relax and enjoy the ride.</p>
+      <p data-lang="pt">Seu motorista chega no horario combinado. Relaxe e aproveite a viagem.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why-us" id="por-que">
+  <div class="section-title">
+    <h2 data-lang="es">Por Que Elegirnos</h2>
+    <h2 data-lang="en">Why Choose Us</h2>
+    <h2 data-lang="pt">Por Que Nos Escolher</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feature">
+      <div class="feature-icon">&#128170;</div>
+      <h3 data-lang="es">Conductores Profesionales</h3>
+      <h3 data-lang="en">Professional Drivers</h3>
+      <h3 data-lang="pt">Motoristas Profissionais</h3>
+      <p data-lang="es">Todos nuestros conductores estan capacitados y verificados.</p>
+      <p data-lang="en">All our drivers are trained and background-checked.</p>
+      <p data-lang="pt">Todos nossos motoristas sao capacitados e verificados.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">&#128176;</div>
+      <h3 data-lang="es">Precios Justos</h3>
+      <h3 data-lang="en">Fair Prices</h3>
+      <h3 data-lang="pt">Precos Justos</h3>
+      <p data-lang="es">Tarifas competitivas sin sorpresas ni cargos ocultos.</p>
+      <p data-lang="en">Competitive rates with no surprises or hidden fees.</p>
+      <p data-lang="pt">Tarifas competitivas sem surpresas nem taxas ocultas.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">&#9201;</div>
+      <h3 data-lang="es">Puntualidad</h3>
+      <h3 data-lang="en">Punctuality</h3>
+      <h3 data-lang="pt">Pontualidade</h3>
+      <p data-lang="es">Respetamos tu tiempo. Siempre llegamos a la hora pactada.</p>
+      <p data-lang="en">We respect your time. We always arrive on schedule.</p>
+      <p data-lang="pt">Respeitamos seu tempo. Sempre chegamos no horario combinado.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">&#128274;</div>
+      <h3 data-lang="es">Seguridad</h3>
+      <h3 data-lang="en">Safety</h3>
+      <h3 data-lang="pt">Seguranca</h3>
+      <p data-lang="es">Vehiculos en perfecto estado con seguros al dia.</p>
+      <p data-lang="en">Well-maintained vehicles with up-to-date insurance.</p>
+      <p data-lang="pt">Veiculos em perfeito estado com seguros em dia.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contacto">
+  <h2 data-lang="es">Listo para viajar?</h2>
+  <h2 data-lang="en">Ready to ride?</h2>
+  <h2 data-lang="pt">Pronto para viajar?</h2>
+  <p data-lang="es">Contactanos ahora y reserva tu proximo viaje con TeLlevo.</p>
+  <p data-lang="en">Contact us now and book your next ride with TeLlevo.</p>
+  <p data-lang="pt">Fale conosco agora e reserve sua proxima viagem com TeLlevo.</p>
+  <div class="cta-buttons">
+    <a href="https://wa.me/595981000000" class="btn-whatsapp" target="_blank" rel="noopener">
+      &#128172;
+      <span data-lang="es">WhatsApp</span>
+      <span data-lang="en">WhatsApp</span>
+      <span data-lang="pt">WhatsApp</span>
+    </a>
+    <a href="tel:+595981000000" class="btn-call">
+      &#128222;
+      <span data-lang="es">Llamar Ahora</span>
+      <span data-lang="en">Call Now</span>
+      <span data-lang="pt">Ligar Agora</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Te<span>Llevo</span></div>
+  <div class="footer-links">
+    <a href="#servicios" data-lang="es">Servicios</a>
+    <a href="#como-funciona" data-lang="es">Como Funciona</a>
+    <a href="#contacto" data-lang="es">Contacto</a>
+    <a href="#servicios" data-lang="en">Services</a>
+    <a href="#como-funciona" data-lang="en">How It Works</a>
+    <a href="#contacto" data-lang="en">Contact</a>
+    <a href="#servicios" data-lang="pt">Servicos</a>
+    <a href="#como-funciona" data-lang="pt">Como Funciona</a>
+    <a href="#contacto" data-lang="pt">Contato</a>
+  </div>
+  <p data-lang="es">&copy; 2026 TeLlevo. Todos los derechos reservados. Asuncion, Paraguay.</p>
+  <p data-lang="en">&copy; 2026 TeLlevo. All rights reserved. Asuncion, Paraguay.</p>
+  <p data-lang="pt">&copy; 2026 TeLlevo. Todos os direitos reservados. Assuncao, Paraguai.</p>
+</footer>
+
+<script>
+  let currentLang = 'es';
+
+  function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('[data-lang]').forEach(el => {
+      el.style.display = el.getAttribute('data-lang') === lang ? '' : 'none';
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
+    });
+    document.documentElement.lang = lang;
+    const titles = {
+      es: 'TeLlevo - Servicio de transporte en Paraguay',
+      en: 'TeLlevo - Transportation Service in Paraguay',
+      pt: 'TeLlevo - Servico de transporte no Paraguai'
+    };
+    document.title = titles[lang];
+  }
+
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('navLinks').classList.remove('open');
+    });
+  });
+
+  // Detect browser language
+  const browserLang = navigator.language.slice(0, 2);
+  if (['es', 'en', 'pt'].includes(browserLang)) {
+    setLang(browserLang);
+  }
+</script>
+
+</body>
+</html>
