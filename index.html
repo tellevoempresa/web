@@ -1060,7 +1060,7 @@
       gsap.to(nums[i], { scale: 1, ...colors[i], duration: 0.6, ease: 'back.out(2.5)' });
     });
 
-    const drive = { duration: 1, ease: 'power2.inOut' };
+    const drive = { duration: 1, ease: 'sine.inOut' };
     const tilt = vertical ? null : gsap.quickTo(car, 'rotation', { duration: 0.4, ease: 'power3' });
 
     // Car faces right; on mobile rotate it to point down the road
@@ -1070,9 +1070,10 @@
       onUpdate: () => revealPassed(tl.time()),
       scrollTrigger: {
         trigger: '.steps-container',
-        start: vertical ? 'top 70%' : 'top 75%',
-        end: vertical ? 'bottom 50%' : 'bottom 35%',
-        scrub: 1,
+        // Long scroll range so each scroll moves the car only a little
+        start: vertical ? 'top 85%' : 'top 90%',
+        end: vertical ? 'bottom 25%' : 'bottom 15%',
+        scrub: 1.5,
         invalidateOnRefresh: true,
         onUpdate: self => tilt && tilt(gsap.utils.clamp(-8, 8, -self.getVelocity() / 150))
       }
