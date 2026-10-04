@@ -299,40 +299,53 @@
       gap: 32px;
       position: relative;
     }
+    /* Asphalt road under the stop signs; above them in stacking so the car passes in front of the posts */
     .road {
-      position: absolute; top: 39px;
-      left: calc(16.66% + 24px); right: calc(16.66% + 24px);
-      height: 4px; border-radius: 4px;
-      background: var(--gray-200);
+      position: absolute; top: 96px; left: 0; right: 0;
+      height: 36px; border-radius: 18px;
+      background: #3A3F44;
+      z-index: 2;
     }
-    .road-fill {
-      position: absolute; inset: 0; border-radius: inherit;
-      background: linear-gradient(90deg, var(--primary), var(--accent));
-      transform-origin: left;
+    .road::before {
+      content: '';
+      position: absolute; left: 20px; right: 20px; top: 50%;
+      height: 3px; margin-top: -1.5px;
+      background: repeating-linear-gradient(90deg, rgba(255,255,255,0.8) 0 16px, transparent 16px 32px);
     }
+    /* Positioned with margins (not transforms) so GSAP only ever animates x/y/rotation */
     .road-car {
-      position: absolute; top: 0; left: 0;
-      font-size: 2.2rem; line-height: 1;
+      position: absolute; left: 0; top: 50%;
+      width: 96px; height: 54px;
+      margin: -46px 0 0 -48px;
       opacity: 0; visibility: hidden;
-      filter: grayscale(1) brightness(0.8);
     }
+    .road-car svg { display: block; width: 100%; height: 100%; }
     .step {
       text-align: center;
       position: relative;
     }
     .step-num {
-      width: 80px; height: 80px; border-radius: 50%;
+      width: 64px; height: 64px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.6rem; font-weight: 800;
-      margin: 0 auto 24px;
+      font-size: 1.4rem; font-weight: 800;
+      margin: 0 auto 98px;
       position: relative; z-index: 1;
+      box-shadow: 0 0 0 4px var(--white), 0 6px 16px rgba(0,0,0,0.15);
     }
+    /* Sign post down to the road */
+    .step-num::after {
+      content: '';
+      position: absolute; top: 100%; left: 50%;
+      width: 4px; height: 32px; margin-left: -2px;
+      background: #9AA3AB;
+    }
+    /* Stops follow the Paraguayan flag: white, blue, red */
     .step:nth-child(1) .step-num {
-      background: var(--primary); color: var(--white);
+      background: var(--white); color: var(--primary);
+      box-shadow: inset 0 0 0 3px var(--gray-200), 0 0 0 4px var(--white), 0 6px 16px rgba(0,0,0,0.15);
     }
     .step:nth-child(2) .step-num {
-      background: var(--accent); color: var(--white);
-      color: var(--white);
+      background: var(--primary); color: var(--white);
     }
     .step:nth-child(3) .step-num {
       background: var(--accent); color: var(--white);
@@ -502,14 +515,29 @@
       section { padding: 80px 24px; }
       .services-grid { grid-template-columns: 1fr; }
       .steps-container { grid-template-columns: 1fr; gap: 48px; }
-      .step { text-align: left; padding-left: 104px; min-height: 80px; }
-      .step-num { position: absolute; left: 0; top: 0; margin: 0; }
+      .step { text-align: left; padding-left: 130px; min-height: 56px; }
+      .step-num {
+        position: absolute; left: 58px; top: 0;
+        width: 56px; height: 56px; margin: 0;
+      }
+      .step-num::after {
+        top: 50%; left: -18px;
+        width: 18px; height: 4px; margin: -2px 0 0 0;
+      }
       .step p { margin: 0; max-width: none; }
       .road {
-        top: 40px; left: 38px; right: auto;
-        width: 4px; height: calc(100% - 120px);
+        top: 0; bottom: 0; left: 0; right: auto;
+        width: 40px; height: auto; border-radius: 20px;
       }
-      .road-fill { transform-origin: top; }
+      .road::before {
+        left: 50%; right: auto; top: 16px; bottom: 16px;
+        width: 3px; height: auto; margin: 0 0 0 -1.5px;
+        background: repeating-linear-gradient(180deg, rgba(255,255,255,0.8) 0 16px, transparent 16px 32px);
+      }
+      .road-car {
+        left: 50%; top: 0;
+        width: 72px; height: 40.5px; margin: -20.25px 0 0 -36px;
+      }
       .features-grid { grid-template-columns: repeat(2, 1fr); }
 
       .footer-inner { flex-direction: column; text-align: center; }
@@ -730,8 +758,28 @@
         <p data-lang="pt">Seu motorista chega no horario combinado. Relaxe e aproveite a viagem.</p>
       </div>
       <div class="road" aria-hidden="true">
-        <div class="road-fill"></div>
-        <div class="road-car">&#128663;</div>
+        <div class="road-car">
+          <svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg">
+            <g fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round">
+              <rect x="9" y="2.6" width="30" height="1.8" rx="0.9"/>
+              <path d="M3 8C3 6.3 4.3 5 6 5H43C44.6 5 45.8 5.7 46.6 7L51 13.5L58.5 15C60.8 15.5 62 17 62 19.5V26C62 27.7 60.7 29 59 29H5C3.3 29 2 27.7 2 26V9Z"/>
+              <circle cx="15" cy="28" r="6.5"/>
+              <circle cx="49" cy="28" r="6.5"/>
+            </g>
+            <rect x="9" y="2.6" width="30" height="1.8" rx="0.9" fill="#2E3338"/>
+            <path d="M3 8C3 6.3 4.3 5 6 5H43C44.6 5 45.8 5.7 46.6 7L51 13.5L58.5 15C60.8 15.5 62 17 62 19.5V26C62 27.7 60.7 29 59 29H5C3.3 29 2 27.7 2 26V9Z" fill="#4A5157"/>
+            <path d="M6 8.6C6 8 6.4 7.6 7 7.6H17V14H6Z" fill="#C9D3DC"/>
+            <path d="M19.5 7.6H31V14H19.5Z" fill="#C9D3DC"/>
+            <path d="M33.5 7.6H43C43.8 7.6 44.4 8 44.8 8.6L48.3 14H33.5Z" fill="#C9D3DC"/>
+            <rect x="2" y="23.5" width="60" height="5.5" rx="2" fill="#363B40"/>
+            <rect x="58" y="17" width="4" height="3" rx="1.2" fill="#FFD75E"/>
+            <rect x="2.3" y="9" width="2.6" height="5.5" rx="1" fill="#CE1126"/>
+            <circle cx="15" cy="28" r="6.5" fill="#1F2326"/>
+            <circle cx="15" cy="28" r="2.8" fill="#A7B0B8"/>
+            <circle cx="49" cy="28" r="6.5" fill="#1F2326"/>
+            <circle cx="49" cy="28" r="2.8" fill="#A7B0B8"/>
+          </svg>
+        </div>
       </div>
     </div>
   </div>
@@ -974,65 +1022,65 @@
     });
   });
 
-  // Signature: the car drives the road between steps as you scroll (desktop only)
-  mm.add('(prefers-reduced-motion: no-preference) and (min-width: 901px)', () => {
+  // Signature: the car drives the road and pulls up at each numbered stop as you scroll.
+  // Horizontal on desktop, vertical on mobile where the steps stack.
+  mm.add({
+    motion: '(prefers-reduced-motion: no-preference)',
+    mobile: '(max-width: 900px)'
+  }, ctx => {
+    if (!ctx.conditions.motion) return;
+    const vertical = ctx.conditions.mobile;
+    const axis = vertical ? 'y' : 'x';
     const road = document.querySelector('.road');
     const car = road.querySelector('.road-car');
     const nums = gsap.utils.toArray('.step-num');
-    const pop = { scale: 0, duration: 0.15, ease: 'back.out(2)' };
-    const tilt = gsap.quickTo(car, 'rotation', { duration: 0.4, ease: 'power3' });
 
-    gsap.set(car, { autoAlpha: 1, xPercent: -50, yPercent: -85, scaleX: -1 });
+    // Position of stop i along the road
+    const stop = i => {
+      const num = nums[i], step = num.parentElement;
+      return vertical
+        ? step.offsetTop + num.offsetTop + num.offsetHeight / 2 - road.offsetTop
+        : step.offsetLeft + num.offsetLeft + num.offsetWidth / 2 - road.offsetLeft;
+    };
+    // Signs stay hidden until the car first reaches them, then spring up from the road and stay
+    const arrivals = [0.05, 1.1, 2.5];
+    const shown = [];
+    gsap.set(nums, {
+      autoAlpha: 0, scale: 0,
+      // grow from where the post meets the road
+      transformOrigin: vertical ? '-32% 50%' : '50% 150%'
+    });
+    const revealPassed = time => arrivals.forEach((t, i) => {
+      if (shown[i] || time < t) return;
+      shown[i] = true;
+      gsap.to(nums[i], { autoAlpha: 1, scale: 1, duration: 0.6, ease: 'back.out(2.5)' });
+    });
 
-    gsap.timeline({
+    const drive = { duration: 1, ease: 'power2.inOut' };
+    const tilt = vertical ? null : gsap.quickTo(car, 'rotation', { duration: 0.4, ease: 'power3' });
+
+    // Car faces right; on mobile rotate it to point down the road
+    gsap.set(car, { autoAlpha: 1, rotation: vertical ? 90 : 0 });
+
+    const tl = gsap.timeline({
+      onUpdate: () => revealPassed(tl.time()),
       scrollTrigger: {
-        trigger: '.steps-container', start: 'top 75%', end: 'bottom 45%', scrub: 1,
-        onUpdate: self => tilt(gsap.utils.clamp(-10, 10, self.getVelocity() / 150))
+        trigger: '.steps-container',
+        start: vertical ? 'top 70%' : 'top 75%',
+        end: vertical ? 'bottom 50%' : 'bottom 35%',
+        scrub: 1,
+        invalidateOnRefresh: true,
+        onUpdate: self => tilt && tilt(gsap.utils.clamp(-8, 8, -self.getVelocity() / 150))
       }
     })
-      .from(nums[0], pop, 0)
-      .from('.road-fill', { scaleX: 0, duration: 1, ease: 'none' }, 0.15)
-      .fromTo(car, { x: 0 }, { x: () => road.offsetWidth, duration: 1, ease: 'none' }, 0.15)
-      .from(nums[1], pop, 0.55)
-      .from(nums[2], pop, 1.05);
+      .fromTo(car, { [axis]: () => stop(0) }, { [axis]: () => stop(1), ...drive }, 0.2)
+      .to(car, { [axis]: () => stop(2), ...drive }, 1.6)
+      .to({}, { duration: 0.3 });
 
+    if (!tilt) return;
     const settle = () => tilt(0);
     ScrollTrigger.addEventListener('scrollEnd', settle);
     return () => ScrollTrigger.removeEventListener('scrollEnd', settle);
-  });
-
-  // Mobile: steps stack, so the road runs vertically from the first circle to the last
-  mm.add('(max-width: 900px)', () => {
-    const road = document.querySelector('.road');
-    const nums = gsap.utils.toArray('.step-num');
-    const size = () => {
-      road.style.height = (nums[2].offsetParent.offsetTop - nums[0].offsetParent.offsetTop) + 'px';
-    };
-    size();
-    ScrollTrigger.addEventListener('refreshInit', size);
-    return () => {
-      ScrollTrigger.removeEventListener('refreshInit', size);
-      road.style.height = '';
-    };
-  });
-
-  mm.add('(prefers-reduced-motion: no-preference) and (max-width: 900px)', () => {
-    const road = document.querySelector('.road');
-    const car = road.querySelector('.road-car');
-    const nums = gsap.utils.toArray('.step-num');
-    const pop = { scale: 0, duration: 0.15, ease: 'back.out(2)' };
-
-    // Emoji faces left; rotating -90deg points it down the road
-    gsap.set(car, { autoAlpha: 1, xPercent: -50, x: 2, yPercent: -50, rotation: -90 });
-
-    gsap.timeline({
-      scrollTrigger: { trigger: '.steps-container', start: 'top 70%', end: 'bottom 55%', scrub: 1 }
-    })
-      .from(nums[0], pop, 0)
-      .from('.road-fill', { scaleY: 0, duration: 1, ease: 'none' }, 0.15)
-      .fromTo(car, { y: 0 }, { y: () => road.offsetHeight, duration: 1, ease: 'none' }, 0.15)
-      .from(nums[1], pop, 0.6)
-      .from(nums[2], pop, 1.1);
   });
 
   window.animReady = true;
