@@ -1042,18 +1042,22 @@
         ? step.offsetTop + num.offsetTop + num.offsetHeight / 2 - road.offsetTop
         : step.offsetLeft + num.offsetLeft + num.offsetWidth / 2 - road.offsetLeft;
     };
-    // Signs stay hidden until the car first reaches them, then spring up from the road and stay
+    // Signs wait small and grey; the first time the car reaches one it grows into its color and stays
     const arrivals = [0.05, 1.1, 2.5];
     const shown = [];
+    const colors = nums.map(n => {
+      const cs = getComputedStyle(n);
+      return { backgroundColor: cs.backgroundColor, color: cs.color };
+    });
     gsap.set(nums, {
-      autoAlpha: 0, scale: 0,
+      scale: 0.6, backgroundColor: '#D5DADF', color: '#FFFFFF',
       // grow from where the post meets the road
       transformOrigin: vertical ? '-32% 50%' : '50% 150%'
     });
     const revealPassed = time => arrivals.forEach((t, i) => {
       if (shown[i] || time < t) return;
       shown[i] = true;
-      gsap.to(nums[i], { autoAlpha: 1, scale: 1, duration: 0.6, ease: 'back.out(2.5)' });
+      gsap.to(nums[i], { scale: 1, ...colors[i], duration: 0.6, ease: 'back.out(2.5)' });
     });
 
     const drive = { duration: 1, ease: 'power2.inOut' };
@@ -1075,7 +1079,7 @@
     })
       .fromTo(car, { [axis]: () => stop(0) }, { [axis]: () => stop(1), ...drive }, 0.2)
       .to(car, { [axis]: () => stop(2), ...drive }, 1.6)
-      .to({}, { duration: 0.3 });
+      .to({}, { duration: 2.6 / 0.8 - 2.6 }); // arrive at the last stop at 80% of the scroll
 
     if (!tilt) return;
     const settle = () => tilt(0);
